@@ -3,81 +3,197 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#050816">
-  <meta name="description" content="A searchable, styled web archive of the Awesome Piracy resource list.">
-  <title>Awesome Piracy Archive</title>
+  <meta name="theme-color" content="#050506">
+  <meta name="description" content="The Black Flag Index — a cinematic, searchable interface for the Awesome Piracy archive.">
+  <title>Black Flag Index // Awesome Piracy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
   <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="boot-screen" id="bootScreen" aria-hidden="true">
+    <div class="boot-mark">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 9v46M18 13c14-8 21 8 34 0v27c-13 8-20-8-34 0z"/></svg>
+    </div>
+    <div class="boot-copy">
+      <span>BLACK FLAG SYSTEMS</span>
+      <strong id="bootLine">INITIALIZING ARCHIVE NODE</strong>
+      <div class="boot-track"><i id="bootProgress"></i></div>
+    </div>
+  </div>
+
+  <canvas id="signalCanvas" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="cursor-orb" id="cursorOrb" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Awesome Piracy Archive home">
-      <span class="brand-mark">AP</span>
-      <span><strong>Awesome Piracy</strong><small>Archive portal</small></span>
+    <a class="brand" href="#top" aria-label="Black Flag Index home">
+      <span class="flag-mark">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 9v46M18 13c14-8 21 8 34 0v27c-13 8-20-8-34 0z"/></svg>
+      </span>
+      <span class="brand-copy">
+        <strong>BLACK FLAG</strong>
+        <small>AWESOME // PIRACY INDEX</small>
+      </span>
     </a>
+
+    <div class="system-strip" aria-label="Archive system status">
+      <span><i class="live-dot"></i> NODE ONLINE</span>
+      <span id="systemClock">00:00:00</span>
+      <span>SECTOR AP-01</span>
+    </div>
+
     <nav class="top-actions">
-      <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle theme">◐</button>
-      <a class="github-btn" href="https://github.com/DJTheNetrunna/awesome-piracy">View repository</a>
+      <button id="commandButton" class="hud-button" type="button" aria-label="Open command search">
+        <span>⌘</span><b>SEARCH</b><kbd>/</kbd>
+      </button>
+      <button id="themeToggle" class="square-button" type="button" aria-label="Switch color mode">◐</button>
+      <a class="square-button github-link" href="https://github.com/DJTheNetrunna/awesome-piracy" aria-label="Open GitHub repository" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .7a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.6.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.8 5.4-5.5 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .7Z"/></svg>
+      </a>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero shell">
+      <div class="hero-data" aria-hidden="true">
+        <span>LAT 47.6062° N</span>
+        <span>LON 122.3321° W</span>
+        <span>ENCRYPTION: VISUAL</span>
+      </div>
+
       <div class="hero-copy">
-        <p class="eyebrow">CURATED DIGITAL RESOURCE ARCHIVE</p>
-        <h1>Explore the archive.<br><span>Search at signal speed.</span></h1>
-        <p class="hero-text">A modern, searchable interface for the repository’s existing Markdown collection. Content is presented for archival, research, and educational reference.</p>
-        <div class="search-wrap">
+        <p class="eyebrow"><span>01</span> THE BLACK FLAG INDEX</p>
+        <h1>
+          <span class="outline-word">AWESOME</span>
+          <span class="solid-word glitch" data-text="PIRACY">PIRACY</span>
+        </h1>
+        <div class="hero-lower">
+          <p>A cinematic interface for navigating a preserved digital resource archive. Search the signal. Trace the knowledge. Verify everything.</p>
+          <button class="enter-button" id="enterArchive" type="button">
+            <span>ENTER THE ARCHIVE</span>
+            <i>↘</i>
+          </button>
+        </div>
+
+        <div class="primary-search" id="primarySearch">
+          <span class="search-prefix">QUERY://</span>
           <label class="sr-only" for="searchInput">Search archive</label>
-          <span aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Search headings, tools, guides, and descriptions…" autocomplete="off">
+          <input id="searchInput" type="search" placeholder="Search the entire archive..." autocomplete="off" spellcheck="false">
           <kbd>/</kbd>
         </div>
-        <div id="searchMeta" class="search-meta">Loading archive…</div>
+        <div class="search-readout">
+          <span id="searchMeta">CONNECTING TO ARCHIVE...</span>
+          <span>ESC TO CLEAR</span>
+        </div>
       </div>
-      <aside class="hero-panel" aria-label="Archive status">
-        <span class="status-dot"></span>
-        <p>STATIC ARCHIVE</p>
-        <strong id="sectionCount">—</strong>
-        <small>indexed sections</small>
-        <div class="panel-line"></div>
-        <span>Original Markdown remains the source of truth.</span>
+
+      <aside class="hero-visual" aria-label="Archive telemetry">
+        <div class="radar">
+          <div class="radar-ring ring-a"></div>
+          <div class="radar-ring ring-b"></div>
+          <div class="radar-ring ring-c"></div>
+          <div class="radar-sweep"></div>
+          <div class="radar-core">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 9v46M18 13c14-8 21 8 34 0v27c-13 8-20-8-34 0z"/></svg>
+          </div>
+          <i class="blip blip-a"></i><i class="blip blip-b"></i><i class="blip blip-c"></i>
+        </div>
+        <div class="telemetry">
+          <span>SIGNAL MAP</span>
+          <strong id="sectionCount">000</strong>
+          <small>INDEXED SECTORS</small>
+        </div>
       </aside>
     </section>
 
-    <section class="shell layout">
-      <aside class="sidebar">
-        <div class="sidebar-head">
-          <span>Navigation</span>
-          <button id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+    <section class="metric-rail" aria-label="Archive metrics">
+      <div class="shell metric-grid">
+        <article><span>01 / SECTORS</span><strong id="metricSections">000</strong><small>navigation nodes</small></article>
+        <article><span>02 / RESOURCES</span><strong id="metricLinks">0000</strong><small>external references</small></article>
+        <article><span>03 / MODE</span><strong>STATIC</strong><small>zero database layer</small></article>
+        <article><span>04 / SOURCE</span><strong>MARKDOWN</strong><small>repository-native data</small></article>
+      </div>
+    </section>
+
+    <section class="category-zone shell" id="categories">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span>02</span> SIGNAL DIRECTORY</p>
+          <h2>Choose a sector.</h2>
         </div>
-        <nav id="toc" class="toc" aria-label="Document sections"></nav>
+        <p>Primary archive categories are extracted directly from the repository and converted into fast-access signal cards.</p>
+      </div>
+      <div class="category-grid" id="categoryGrid">
+        <div class="category-skeleton"></div><div class="category-skeleton"></div><div class="category-skeleton"></div>
+      </div>
+    </section>
+
+    <section class="archive-zone shell" id="archive">
+      <aside class="archive-nav">
+        <div class="nav-title">
+          <div><span>ARCHIVE MAP</span><small>LIVE DIRECTORY</small></div>
+          <button id="menuToggle" type="button" aria-label="Toggle archive navigation">☰</button>
+        </div>
+        <nav id="toc" class="toc" aria-label="Archive sections"></nav>
+        <div class="nav-footer">
+          <span><i class="live-dot"></i> INDEX SYNCHRONIZED</span>
+          <small>SCROLL TO TRACE SIGNAL</small>
+        </div>
       </aside>
 
-      <article class="content-card">
-        <div class="notice">
-          <strong>Archive notice</strong>
-          <span>This interface does not verify, endorse, or update external resources. Follow applicable laws, licenses, and service terms.</span>
+      <article class="archive-terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dots"><i></i><i></i><i></i></div>
+          <span>AP_INDEX / ROOT / README.MD</span>
+          <span id="resultCount">ALL SECTORS</span>
+        </div>
+        <div class="archive-notice">
+          <span>ARCHIVAL NODE</span>
+          <p>This interface preserves an older public resource list. External destinations are not verified or endorsed. Follow applicable laws, licenses, and platform terms.</p>
         </div>
         <div id="content" class="markdown-body" aria-live="polite">
-          <div class="loader"><span></span><p>Indexing repository content…</p></div>
+          <div class="loader">
+            <div class="loader-glyph"><i></i><i></i><i></i></div>
+            <p>DECODING REPOSITORY SIGNAL</p>
+          </div>
         </div>
         <div id="emptyState" class="empty-state" hidden>
-          <strong>No matching sections</strong>
-          <span>Try a broader search term.</span>
+          <span>NO SIGNAL</span>
+          <strong>No matching sectors found.</strong>
+          <p>Broaden the query or press ESC to reset the archive.</p>
         </div>
       </article>
     </section>
   </main>
 
-  <footer class="shell footer">
-    <span>Awesome Piracy Archive</span>
-    <span>Built from <code>readme.md</code> · Hosted with GitHub Pages</span>
+  <footer class="footer shell">
+    <div class="footer-brand">
+      <span class="flag-mark mini"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 9v46M18 13c14-8 21 8 34 0v27c-13 8-20-8-34 0z"/></svg></span>
+      <div><strong>BLACK FLAG INDEX</strong><small>AWESOME PIRACY ARCHIVE</small></div>
+    </div>
+    <p>Built from <code>readme.md</code> · Deployed through GitHub Pages · Designed for archival navigation.</p>
+    <a href="#top">RETURN TO SURFACE ↑</a>
   </footer>
+
+  <dialog class="command-palette" id="commandPalette">
+    <form method="dialog" class="command-shell">
+      <div class="command-head">
+        <span>COMMAND SEARCH</span>
+        <button value="cancel" aria-label="Close command search">ESC</button>
+      </div>
+      <label class="command-input">
+        <span>⌕</span>
+        <input id="commandInput" type="search" placeholder="Type a sector, tool, or keyword..." autocomplete="off">
+      </label>
+      <div class="command-results" id="commandResults"></div>
+      <div class="command-foot"><span>↑↓ NAVIGATE</span><span>ENTER OPEN</span><span>ESC CLOSE</span></div>
+    </form>
+  </dialog>
 </body>
 </html>
